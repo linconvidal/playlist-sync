@@ -1,0 +1,23 @@
+[project]
+name = "spotsync"
+version = "0.1.0"
+description = "Synchronize M3U8 playlist files with Spotify using fuzzy matching"
+readme = "README.MD"
+requires-python = ">=3.12"
+dependencies = [
+    "pytest>=8.4.1",
+    "pytest-cov>=6.2.1",
+    "python-dotenv>=1.1.1",
+    "python-levenshtein>=0.27.1",
+    "spotipy>=2.25.1",
+    "textual>=5.2.0",
+    "typer>=0.16.0",
+]
+
+[project.scripts]
+spotsync = "spotsync.__main__:main"
+
+[dependency-groups]
+dev = [
+    "pytest-asyncio>=1.1.0",
+]
