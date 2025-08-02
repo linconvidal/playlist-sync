@@ -4,6 +4,8 @@
 
 MySpotSync is a simple tool to sync .m3u8 playlists with Spotify. It reads one or more .m3u8 files, matches the tracks with Spotify's catalog, and creates/updates corresponding playlists in your Spotify account.
 
+![SpotSync Demo](spotsync-demo.gif)
+
 ## **Core Features**
 
 1. **Parse .m3u8 files** - Extract track paths and metadata
