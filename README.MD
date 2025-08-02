@@ -2,7 +2,7 @@
 
 ## **Overview**
 
-MySpotSync is a simple tool to sync .m3u8 playlists with Spotify. It reads one or more .m3u8 files, matches the tracks with Spotify's catalog, and creates/updates corresponding playlists in your Spotify account.
+MySpotSync is a simple tool to sync .m3u8 playlists with Spotify. It reads one or more .m3u8 files, matches the tracks with Spotify's catalog, and creates/updates corresponding playlists in your Spotify account. It also includes a comparison feature to identify differences between local M3U8 playlists and their Spotify counterparts.
 
 ![SpotSync Demo](spotsync-demo.gif)
 
@@ -11,7 +11,8 @@ MySpotSync is a simple tool to sync .m3u8 playlists with Spotify. It reads one o
 1. **Parse .m3u8 files** - Extract track paths and metadata
 2. **Match tracks with Spotify** - Find corresponding tracks in Spotify catalog
 3. **Sync playlists** - Create/update Spotify playlists based on .m3u8 content
-4. **Dual interfaces**:
+4. **Compare playlists** - Identify differences between local M3U8 and Spotify playlists
+5. **Dual interfaces**:
    - **CLI** - Simple command-line interface for scripting and automation
    - **TUI** - Interactive Textual-based interface for monitoring sync status
 
@@ -89,6 +90,19 @@ spotsync sync "My Playlist.m3u8" --dry-run
 
 # Show unmatched tracks only
 spotsync check "My Playlist.m3u8"
+
+# Compare M3U8 with Spotify playlist
+spotsync compare "My Playlist.m3u8"
+
+# Compare with specific Spotify playlist name
+spotsync compare "My Playlist.m3u8" --spotify-name "Different Name"
+
+# Compare with different output formats
+spotsync compare "My Playlist.m3u8" --format json
+spotsync compare "My Playlist.m3u8" --format summary
+
+# Compare with custom matching threshold
+spotsync compare "My Playlist.m3u8" --threshold 0.75
 ```
 
 ### TUI Mode
@@ -163,4 +177,9 @@ spotsync sync "/path/to/playlist.m3u8" --quiet
 
 # Force update (replace entire playlist)
 spotsync sync "/path/to/playlist.m3u8" --force
+
+# Compare playlists
+spotsync compare "/path/to/playlist.m3u8"
+spotsync compare "/path/to/playlist.m3u8" --spotify-name "My Spotify List"
+spotsync compare "/path/to/playlist.m3u8" --format json > comparison.json
 ```

@@ -75,12 +75,14 @@ playlist-sync/
 │       ├── parser.py         # M3U8 parsing logic
 │       ├── matcher.py        # Track matching with fuzzy logic
 │       ├── spotify_api.py    # Spotify API integration
+│       ├── comparer.py       # Playlist comparison logic
 │       ├── cli.py            # CLI interface with Typer
 │       └── tui.py            # TUI interface with Textual
 ├── tests/
 │   ├── __init__.py
 │   ├── test_parser.py        # Parser module tests
-│   └── test_matcher.py       # Matcher module tests
+│   ├── test_matcher.py       # Matcher module tests
+│   └── test_comparer.py      # Comparer module tests
 ├── pyproject.toml            # Project configuration
 ├── uv.lock                   # Dependency lock file
 ├── CLAUDE.md                 # This file
@@ -94,9 +96,10 @@ playlist-sync/
 - **M3U8 Parser**: Handles various M3U8 formats with EXTINF support
 - **Track Matcher**: Fuzzy matching with configurable threshold (default 0.8)
 - **Spotify API**: OAuth2 authentication with full playlist management
-- **CLI Interface**: Three commands (`sync`, `list-tracks`, `test-match`)
+- **Playlist Comparison**: Compare M3U8 with Spotify playlists to find differences
+- **CLI Interface**: Four commands (`sync`, `list-tracks`, `test-match`, `compare`)
 - **TUI Interface**: Interactive terminal UI with file browser and track selection
-- **Tests**: 16 passing tests with comprehensive coverage
+- **Tests**: 24 passing tests with comprehensive coverage
 
 ## Environment Setup
 
@@ -138,11 +141,25 @@ uv run spotsync list-tracks my_playlist.m3u8
 # Test matching without creating playlist
 uv run spotsync test-match my_playlist.m3u8 --threshold 0.7
 
+# Compare M3U8 with Spotify playlist
+uv run spotsync compare my_playlist.m3u8
+uv run spotsync compare my_playlist.m3u8 --spotify-name "Different Name"
+uv run spotsync compare my_playlist.m3u8 --format json
+
 # Interactive TUI mode
 uv run spotsync
 ```
 
 ## Recent Improvements & Known Issues
+
+### Playlist Comparison Feature (New)
+- **Feature**: Compare M3U8 playlists with Spotify playlists to identify differences
+- **Implementation**: 
+  1. Added `get_playlist_tracks_detailed()` method to SpotifyAPI
+  2. Created new `comparer.py` module with `PlaylistComparer` class
+  3. Added `compare` command to CLI with table, JSON, and summary output formats
+  4. Uses same fuzzy matching logic as sync feature (threshold 0.83)
+- **Usage**: `spotsync compare playlist.m3u8 [--spotify-name "Name"] [--format json|table|summary]`
 
 ### TUI Interface Debugging (Fixed)
 - **Issue**: TUI interface not reflecting code changes despite reinstalls

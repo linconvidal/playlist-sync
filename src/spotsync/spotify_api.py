@@ -1,7 +1,7 @@
 """Spotify API integration module."""
 
 import os
-from typing import List, Dict, Optional, Set
+from typing import List, Dict, Optional, Set, Any
 from dataclasses import dataclass
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
@@ -170,6 +170,52 @@ class SpotifyAPI:
             offset += 100
         
         return tracks
+    
+    def get_playlist_tracks_detailed(self, playlist_id: str) -> List[Dict[str, Any]]:
+        """Get detailed track information from a Spotify playlist.
+        
+        Args:
+            playlist_id: Spotify playlist ID
+            
+        Returns:
+            List of dicts with keys: 'id', 'name', 'artists', 'album', 'duration_ms'
+        """
+        tracks = []
+        offset = 0
+        
+        while True:
+            results = self.sp.playlist_tracks(playlist_id, offset=offset)
+            
+            for item in results['items']:
+                track = item['track']
+                if track and track['id']:
+                    track_info = {
+                        'id': track['id'],
+                        'name': track['name'],
+                        'artists': ', '.join(artist['name'] for artist in track['artists']),
+                        'album': track['album']['name'],
+                        'duration_ms': track['duration_ms']
+                    }
+                    tracks.append(track_info)
+            
+            if not results['next']:
+                break
+            
+            offset += 100
+        
+        return tracks
+    
+    def find_playlist_by_name(self, name: str) -> Optional[str]:
+        """Find a user's playlist by exact name match.
+        
+        Args:
+            name: Playlist name to search for
+            
+        Returns:
+            Playlist ID if found, None otherwise
+        """
+        # Reuse existing playlist_exists method which already does this
+        return self.playlist_exists(name)
     
     def add_tracks_to_playlist(self, playlist_id: str, track_ids: List[str], 
                               check_duplicates: bool = True) -> int:

@@ -7,6 +7,7 @@ import pytest
 from spotsync.tui import SpotSyncApp
 
 
+@pytest.mark.asyncio
 async def test_tui_interface_debug():
     """Debug test to see what widgets are actually rendered."""
     app = SpotSyncApp()
